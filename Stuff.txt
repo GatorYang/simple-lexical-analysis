@@ -1,0 +1,5 @@
+Key words: BEGIN, FOR, END
+Identifiers: anything lower case
+Constants: Numbers like 10, ... .
+Operators: all arithmetic operations (i.e., +, -, *, and /), ”++” and ”=”
+Delimiters: like ”,” and ”;”
