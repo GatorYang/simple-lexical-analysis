@@ -28,7 +28,7 @@ void Stack::pop(){
 }
 
 void Stack::clean(){
-	for (int i; i < vect.size(); i ++){
+	for (size_t i; i < vect.size(); i ++){
 		vect.pop_back();
 		currentCount--;
 	}
@@ -64,6 +64,7 @@ int main (){
 	int absnest = 0;
 	int count = 0;
 	bool paren = true;
+	unsigned int a = -1;
 	//bunch checks see if what we are looking for are in the txt file
 	bool hasPlus = false;
 	bool hasMinus = false;
@@ -84,7 +85,7 @@ int main (){
     ifstream file;
     file.open(filename);
     if (file.fail()){
-        cout << "ERROR FAIL TO OPEN FILE" <<endl;
+        cout << "ERROR: FAIL TO OPEN FILE!" <<endl;
         return 1;
     }
     Stack loop;
@@ -93,10 +94,10 @@ int main (){
     while( getline(file,line) ) {
 	
 		
-		if (line.find("FOR")!=-1){
+		if (line.find("FOR")!= a){
 			hasFor= true;
 		}
-		if (line.find("BEGIN")!=-1){
+		if (line.find("BEGIN")!= a){
 			hasBegin= true;
 			loop.push("BEGIN");
 			
@@ -114,33 +115,33 @@ int main (){
 				paren = true;
 			}
 		}
-		if (line.find("END")!=-1){
+		if (line.find("END")!= a){
 			hasEnd= true;
 			loop.pop();
 			isnest = false;
 		}
-		if (line.find(",")!=-1){
+		if (line.find(",")!= a){
 			hasComma= true;
 		}
-		if (line.find(";")!=-1){
+		if (line.find(";")!= a){
 			hasSemicolon= true;
 		}
-		if (line.find(" + ")!=-1){
+		if (line.find(" + ")!= a){
 			hasPlus= true;
 		}
-		if (line.find("++")!=-1){
+		if (line.find("++")!= a){
 			hasPlusPlus= true;
 		}
-		if (line.find("-")!=-1){
+		if (line.find("-")!= a){
 			hasMinus= true;
 		}
-		if (line.find("*")!=-1){
+		if (line.find("*")!= a){
 			hasStar= true;
 		}
-		if (line.find("/")!=-1){
+		if (line.find("/")!= a){
 			hasForwardSlash= true;
 		}
-		if (line.find("(")!=-1 || line.find(")")!=-1){
+		if (line.find("(")!= a || line.find(")")!= a){
 			checkParen(line, errors, paren);
 		}
 		
@@ -178,11 +179,11 @@ int main (){
 	if (hasBegin) cout<<"BEGIN ";
 	if (hasEnd) cout<<"END";
 	cout <<"\nIdentifiers: ";
-	for (int i = 0; i < iden.size(); i++){
+	for (size_t i = 0; i < iden.size(); i++){
 	    cout<<iden[i] + " ";
 	}
 	cout <<"\nConstants: ";
-	for (int i = 0; i < cons.size(); i++)
+	for (size_t i = 0; i < cons.size(); i++)
 	    cout<<cons[i] + " ";
 	cout <<"\nOperators: ";
 	if (hasPlusPlus) cout<<"++ ";
@@ -197,12 +198,13 @@ int main (){
 	
 	cout<<"\nSyntax Error(s):";
 	checkEnd(errors, hasEnd);
-    for (int i = 0; i < errors.size(); i++){
+    for (size_t i = 0; i < errors.size(); i++){
 	    cout<<errors[i] + " ";
     }
 	if ( errors.size() < 2){
-		cout << "NA" <<endl;
+		cout << "NA" ;
 	}
+	cout << "\n";
 	file.close();
 	return 0;
 }
@@ -210,7 +212,7 @@ int main (){
 
 void checkIden(string line, vector <string> &iden){
 	string identi = "";
-	for(int i = 0; i < line.size(); i++){
+	for(size_t i = 0; i < line.size(); i++){
 		if (islower(line[i])!=0){
 			identi += line[i];
 		} 
@@ -226,7 +228,7 @@ void checkIden(string line, vector <string> &iden){
 
 void checkCons(string line, vector <string> &cons){
 	string conss = "";
-	for(int i = 0; i < line.size(); i++){
+	for(size_t i = 0; i < line.size(); i++){
 		if (isdigit(line[i])!=0){
 			conss += line[i];
 		} 
@@ -241,8 +243,7 @@ void checkCons(string line, vector <string> &cons){
 
 void checkErrors(string line, vector <string> &errors){
 	string uper = "";
-	bool check = true;
-	for(int i = 0; i < line.size(); i++){
+	for(size_t i = 0; i < line.size(); i++){
 		if (isupper(line[i])!=0){
 			uper += line[i];
 		} 
@@ -251,7 +252,6 @@ void checkErrors(string line, vector <string> &errors){
 				errors.push_back(uper);	
 			}
 			uper = "";
-			check = false;
 		}
 	}
 	if (checkSyntax(uper)){
@@ -281,7 +281,7 @@ void checkEnd(vector <string> &errors, bool end){
 void checkParen(string line, vector <string> &errors, bool &paren){
 	int braIn = 0;
 	int braEnd = 0;
-	for(int i = 0; i < line.size(); i++){
+	for(size_t i = 0; i < line.size(); i++){
 		if(line[i] == '('){
 			braIn ++;
 		}
