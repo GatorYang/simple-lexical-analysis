@@ -15,15 +15,16 @@ void checkParen(string line, vector <string> &errors, bool &paren);//parenthesis
 
 void Stack::push(string data){
 	vect.push_back(data);
+	currentCount++;
+		if (currentCount > maxCount){
+			maxCount = currentCount;
+		}
 }
 
 void Stack::pop(){
 	if (vect.size() > 0){
 		vect.pop_back();
-		currentCount++;
-		if (currentCount > maxCount){
-			maxCount = currentCount;
-		}
+		currentCount--;
 	}
 }
 
@@ -64,7 +65,7 @@ int main (){
 	int absnest = 0;
 	int count = 0;
 	bool paren = true;
-	unsigned int a = -1;
+	size_t a = -1;
 	//bunch checks see if what we are looking for are in the txt file
 	bool hasPlus = false;
 	bool hasMinus = false;
@@ -92,20 +93,22 @@ int main (){
     
     
     while( getline(file,line) ) {
-	
-		
 		if (line.find("FOR")!= a){
 			hasFor= true;
 		}
 		if (line.find("BEGIN")!= a){
 			hasBegin= true;
 			loop.push("BEGIN");
-			
 			if (isnest && paren){
 				nestcount ++;
+				if (nestcount > absnest){
+					absnest = nestcount;
+				}
 			}
 			else if (!isnest && paren){
-				absnest = nestcount;
+				if (nestcount > absnest){
+					absnest = nestcount;
+				}
 				nestcount = 0;
 				nestcount ++;
 				isnest=true;
@@ -165,13 +168,12 @@ int main (){
 	if (loop.getCurrent() < 0 && loop.getMax() != 0){
 		count = loop.getMax() + loop.getCurrent();
 	}
-	
-	if (absnest > 0 && count > absnest){
+	if (absnest > 0 && count < absnest){
 		count = absnest;
 	}
 	
 	cout << "The depth of nested loop(s) is ";
-	cout << count << "!";
+	cout << count;
 	
 	
 	cout <<"\nKeywords: ";

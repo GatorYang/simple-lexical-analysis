@@ -1,0 +1,17 @@
+FOR (i, 10, ++)
+BEGIN
+  FOR (j, 10, ++)
+    BEGIN
+    FOR (k, 10, ++)
+        BEGIN
+    	    sum=sum + i * j + k;
+        AND
+    END 
+END 
+FOR (i, 10, ++)
+BEGIN
+FOR (j, 10, ++)
+    BEGIN
+        sum=sum + i / j;
+    ENN
+END
