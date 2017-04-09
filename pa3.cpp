@@ -6,14 +6,14 @@
 
 using namespace std;
 
-void checkIden(string line, vector <string> &iden);
-void checkCons(string line, vector <string> &cons);
-void checkErrors(string line, vector <string> &errors);
-bool checkSyntax (string s);
-void checkEnd(vector <string> &errors, bool end);
+void checkIden(string line, vector <string> &iden); //method check all the identifiers and store into the vector
+void checkCons(string line, vector <string> &cons); //method check all the constant and store into the vector
+void checkErrors(string line, vector <string> &errors); //method check all the errors and store into the vector
+bool checkSyntax (string s); //method check if the string contain words thats not "FOR,BEGIN,END"
+void checkEnd(vector <string> &errors, bool end); //if not in "FOR,BEGIN,END" add to the error vector
 void checkParen(string line, vector <string> &errors, bool &paren);//parenthesis syntax error
 
-void Stack::push(string data){
+void Stack::push(string data){ //push for the stack
 	vect.push_back(data);
 	currentCount++;
 		if (currentCount > maxCount){
@@ -21,37 +21,37 @@ void Stack::push(string data){
 		}
 }
 
-void Stack::pop(){
+void Stack::pop(){ //pop for the stack
 	if (vect.size() > 0){
 		vect.pop_back();
 		currentCount--;
 	}
 }
 
-void Stack::clean(){
+void Stack::clean(){	//delete everything on the stack
 	for (size_t i; i < vect.size(); i ++){
 		vect.pop_back();
 		currentCount--;
 	}
 }
 
-int Stack::getMax(){
+int Stack::getMax(){	//return the top stack size
 	return maxCount;
 }
 
-int Stack::getCurrent(){
+int Stack::getCurrent(){	//return current count on the stack size
 	return currentCount;
 }
 
-void Stack::setMax(int newMax){
+void Stack::setMax(int newMax){	//reset new max stack size
 	maxCount = newMax;
 }
 
-void Stack::setCurrent(int newCurrent){
+void Stack::setCurrent(int newCurrent){	//set new current count
 	currentCount = newCurrent;
 }
 
-int Stack::size(){
+int Stack::size(){ //return the stack size
 	return vect.size();
 }
 
@@ -83,16 +83,20 @@ int main (){
     string line;
     cout << "Please enter the name of the input file:" <<endl;
     cin >> filename;
+    
     ifstream file;
-    file.open(filename);
-    if (file.fail()){
+    file.open(filename); // open the file
+    
+    
+    if (file.fail()){ //if the file doesnt open
         cout << "ERROR: FAIL TO OPEN FILE!" <<endl;
         return 1;
     }
-    Stack loop;
+    
+    Stack loop; //make a stack for counting the oop
     
     
-    while( getline(file,line) ) {
+    while( getline(file,line) ) {	//go thorugh the file line by line
 		if (line.find("FOR")!= a){
 			hasFor= true;
 		}
@@ -157,7 +161,7 @@ int main (){
     count = loop.getMax();
     
     if (loop.size() == 0 && nestcount > absnest){
-    	absnest = nestcount;
+    	absnest = nestcount; 
     }
     
 
@@ -172,6 +176,7 @@ int main (){
 		count = absnest;
 	}
 	
+	//just output the results 
 	cout << "The depth of nested loop(s) is ";
 	cout << count;
 	
