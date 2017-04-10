@@ -148,6 +148,9 @@ int main (){
 		if (line.find("/")!= a){
 			hasForwardSlash= true;
 		}
+		if (line.find("=")!= a){
+			hasEquals= true;
+		}
 		if (line.find("(")!= a || line.find(")")!= a){
 			checkParen(line, errors, paren);
 		}
